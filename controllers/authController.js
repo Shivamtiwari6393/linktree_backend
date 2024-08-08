@@ -35,7 +35,12 @@ const registerUser = async (req, res) => {
 };
 
 const authUser = async (req, res) => {
+  console.log("inside auth user");
+  
   const { email, password } = req.body;
+
+  console.log(email,password);
+  
 
   try {
     const user = await User.findOne({ email });

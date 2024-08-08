@@ -6,6 +6,9 @@ const User = require('../models/User')
 
 const getLinks = async (req, res) => {
 
+  console.log("inside getlink");
+  
+
   try {
 
     const links = await Link.find({ user: req.user._id });
@@ -22,6 +25,9 @@ const getLinks = async (req, res) => {
 //---------------- create link---------------
 
 const createLink = async (req, res) => {
+
+  console.log("inside create link");
+  
   const { title, url } = req.body;
 
   try {
@@ -32,6 +38,8 @@ const createLink = async (req, res) => {
     });
 
     const createdLink = await link.save();
+    console.log(createdLink);
+    
     res.status(201).json(createdLink);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -44,7 +52,7 @@ const createLink = async (req, res) => {
 
 const deleteLink = async (req, res) => {
 
-  console.log("inside delete");
+  console.log("inside delete linnk");
 
   const { id } = req.params;
   console.log("id---", id);
@@ -78,6 +86,10 @@ const deleteLink = async (req, res) => {
 
 
 const getLinksByUsername = async (req, res) => {
+
+
+  console.log("inside find by username");
+  
   const { email } = req.params;
 
   console.log("email",email);
