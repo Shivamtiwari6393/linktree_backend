@@ -27,12 +27,13 @@ const registerUser = async (req, res) => {
     res.status(201).json({
       _id: user._id,
       email: user.email,
-      token: generateToken(user._id),
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+//----------------- auth user/ login ----------------
 
 const authUser = async (req, res) => {
   console.log("inside auth user");
