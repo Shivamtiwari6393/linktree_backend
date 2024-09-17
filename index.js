@@ -20,7 +20,7 @@ app.use(cors({
 app.use(express.json());
 
 
-app.use('/api/users', authRoutes);
+app.use('/api/user', authRoutes);
 app.use('/', linkRoutes);
 
 const PORT = process.env.PORT || 5000;

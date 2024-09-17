@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../model/User');
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -11,10 +11,7 @@ const generateToken = (id) => {
 // -------register user---------------
 
 const registerUser = async (req, res) => {
-    console.log("inside reg user");
-    
   const { email, password } = req.body;
-
   try {
     const userExists = await User.findOne({ email });
 
@@ -35,14 +32,8 @@ const registerUser = async (req, res) => {
 
 //----------------- auth user/ login ----------------
 
-const authUser = async (req, res) => {
-  console.log("inside auth user");
-  
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
-  console.log(email,password);
-  
-
   try {
     const user = await User.findOne({ email });
 
@@ -56,8 +47,9 @@ const authUser = async (req, res) => {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log("error in login", error);
+    res.status(500).json({ "message": "Server error" });
   }
 };
 
-module.exports = { registerUser, authUser };
+module.exports = { registerUser, loginUser };
