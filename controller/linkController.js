@@ -6,7 +6,7 @@ const User = require('../model/User')
 
 const getLinks = async (req, res) => {
 
-  console.log("inside getlink");
+  // console.log("inside getlink");
 
 
   try {
@@ -26,7 +26,7 @@ const getLinks = async (req, res) => {
 
 const createLink = async (req, res) => {
 
-  console.log("inside create link");
+  // console.log("inside create link");
 
   const { title, url } = req.body;
 
@@ -38,7 +38,7 @@ const createLink = async (req, res) => {
     });
 
     const createdLink = await link.save();
-    console.log(createdLink);
+    // console.log(createdLink);
 
     res.status(201).json(createdLink);
   } catch (error) {
@@ -52,16 +52,16 @@ const createLink = async (req, res) => {
 
 const deleteLink = async (req, res) => {
 
-  console.log("inside delete linnk");
+  // console.log("inside delete link");
 
   const { id } = req.params;
-  console.log("id---", id);
+  // console.log("id---", id);
 
 
   try {
     const link = await Link.findById(id);
 
-    console.log("links---", link);
+    // console.log("links---", link);
 
     if (!link) {
       return res.status(404).json({ message: 'Link not found' });
@@ -85,21 +85,21 @@ const deleteLink = async (req, res) => {
 //------------------  get your links -------------------
 
 
-const getLinksByUsername = async (req, res) => {
+const getLinksByUserName = async (req, res) => {
 
 
-  console.log("inside find by username");
+  // console.log("inside find by username");
 
   const { email } = req.params;
 
-  console.log("email", email);
+  // console.log("email", email);
 
 
   try {
     // Find the user by username
     const user = await User.findOne({ email });
 
-    console.log(user);
+    // console.log(user);
 
 
     if (!user) {
@@ -108,7 +108,7 @@ const getLinksByUsername = async (req, res) => {
 
     // Find links associated with the user
 
-    console.log(user._id);
+    // console.log(user._id);
 
     const links = await Link.find({ user: user._id });
 
@@ -118,6 +118,6 @@ const getLinksByUsername = async (req, res) => {
   }
 };
 
-module.exports = { getLinks, createLink, deleteLink, getLinksByUsername };
+module.exports = { getLinks, createLink, deleteLink, getLinksByUserName };
 
 

@@ -3,7 +3,6 @@ const { getLinks, createLink, deleteLink, getLinksByUsername } = require('../con
 const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
 
-router.route('/api/link').get(protect, getLinks).post(protect, createLink);
-router.route('api/link//delete/:id').delete(protect, deleteLink);
-router.route('/:email').post(getLinksByUsername);
+router.route('/').get(protect, getLinks).post(protect, createLink);
+router.route('/delete/:id').delete(protect, deleteLink);
 module.exports = router;

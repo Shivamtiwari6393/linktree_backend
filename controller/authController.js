@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../model/User');
+const bcrypt = require('bcryptjs')
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -19,14 +20,17 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const user = await User.create({ email, password });
 
-    res.status(201).json({
+    encryptedPassword = await bcrypt.hash(password, 10)
+
+    const user = await User.create({ email, password: encryptedPassword });
+
+    return res.status(201).json({
       _id: user._id,
       email: user.email,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+   return res.status(500).json({ message: error.message });
   }
 };
 
@@ -37,18 +41,23 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email });
 
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        _id: user._id,
-        email: user.email,
-        token: generateToken(user._id),
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+    // console.log(user.password);
+    // console.log(password)
+    if (user) {
+      const validUser = await bcrypt.compare(password, user.password)
+      if (!validUser) return res.status(401).json({ message: "Invalid Password" })
+
+      const token = generateToken(user._id)
+
+      return res.status(200).json({message: "Logged in Succesfully", token : token})
+
+    }
+    else {
+     return res.status(401).json({ message: 'Invalid email' });
     }
   } catch (error) {
     console.log("error in login", error);
-    res.status(500).json({ "message": "Server error" });
+    return res.status(500).json({ "message": "Server error" });
   }
 };
 
